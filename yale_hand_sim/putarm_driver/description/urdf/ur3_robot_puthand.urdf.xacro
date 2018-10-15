@@ -11,7 +11,7 @@
   <!-- arm -->
   <xacro:ur3_robot prefix="" joint_limited="false"/>
 
-  <link name="world" />
+  <link name="world"/>
 
   <joint name="world_joint" type="fixed">
     <parent link="world" />
@@ -21,9 +21,9 @@
   
   
    <!-- common stuff -->
-<!--  <xacro:include filename="$(find puthand_driver)/description/urdf/common.gazebo.xacro" /> -->
-  
- <xacro:include filename="$(find wezelROS)/description/urdf/chwytak2.urdf.xacro" />
+<!--  <xacro:include filename="$(find puthand_driver)/description/urdf/common.gazebo.xacro" /> 
+  -->
+ <xacro:include filename="$(find node_yale_hand)/description/urdf/gripper.urdf.xacro" />
  
  <xacro:hand parent="ee_link" name="left_hand" side="-1">
     <origin xyz="0 0 0"  rpy= "0 1.57 0" />
