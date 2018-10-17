@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="limited" default="false"/>
-  
+
+<include file="$(find yale_hand_sim)/description/urdf/ur3_robot_puthand.urdf.xacro" />
+
+<include file="$(find node_yale_hand)/description/urdf/gripper.urdf.xacro" />
+
   <param unless="$(arg limited)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find putarm_driver)/description/urdf/ur3_robot_puthand.urdf.xacro'" />
-  <param if="$(arg limited)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find putarm_driver)/description/urdf/ur3_robot_puthand.urdf.xacro'" />
+
+  <param if="$(arg limited)" name="robot_description" 
+command="$(find xacro)/xacro --inorder '$(find putarm_driver)/description/urdf/ur3_robot_puthand.urdf.xacro'" />
+
+  
 </launch>
