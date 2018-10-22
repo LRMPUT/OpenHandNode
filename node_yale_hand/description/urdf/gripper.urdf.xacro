@@ -1,7 +1,15 @@
 <?xml version="1.0"?>
-<robot name="gripper">
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <link name="base_link">
+  <xacro:macro name="gripperYale" params="parent name *origin">
+    
+    <joint name="${name}_base_joint" type="fixed" >
+      <xacro:insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="gripper_base_link" />
+    </joint>
+    
+  <link name="gripper_base_link">
     <visual>
       <geometry>
         <mesh filename="package://node_yale_hand/description/meshes/base.dae"/>
@@ -149,7 +157,7 @@
   </joint>
 
   <joint name="rotator2" type="continuous">
-    <parent link="base_link"/>
+    <parent link="gripper_base_link"/>
     <child link="rotator_link2"/>
     <axis xyz="0 0 1"/>
     <origin xyz="0.026 -0.030397 0.021352" rpy="0 0 0.1185"/>
@@ -189,4 +197,5 @@
     <limit lower="-1.57" upper="1" effort="30" velocity="5"/>
   </joint>
 
+  </xacro:macro>
 </robot>
