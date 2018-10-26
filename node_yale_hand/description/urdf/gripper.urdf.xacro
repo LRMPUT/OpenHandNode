@@ -14,7 +14,7 @@
       <geometry>
         <mesh filename="package://node_yale_hand/description/meshes/base.dae"/>
       </geometry>
-      <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
+      <origin xyz="0 0 0.01001" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
@@ -150,7 +150,7 @@
   </link>
 
   <joint name="rotator1" type="fixed">
-    <parent link="base_link"/>
+    <parent link="gripper_base_link"/>
     <child link="rotator_link1"/>
     <axis xyz="0 0 1"/>
     <origin xyz="0 0.04 0.021352"/>
@@ -165,7 +165,7 @@
   </joint>
 
   <joint name="rotator3" type="continuous">
-    <parent link="base_link"/>
+    <parent link="gripper_base_link"/>
     <child link="rotator_link3"/>
     <axis xyz="0 0 1"/>
     <origin xyz="-0.026 -0.030397 0.021352" rpy="0 0 -0.1185"/>
