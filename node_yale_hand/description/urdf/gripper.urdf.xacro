@@ -14,7 +14,7 @@
       <geometry>
         <mesh filename="package://node_yale_hand/description/meshes/base.dae"/>
       </geometry>
-      <origin xyz="0 0 0.01001" rpy="1.57 0 3.14"/>
+      <origin xyz="0.0027 -0.009 0.01001" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
