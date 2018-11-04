@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+
+
+
+  <xacro:include filename="$(find putarm_driver)/description/urdf/yale_hand.transmission.xacro" />
+
+<xacro:include filename="$(find putarm_driver)/description/urdf/yale_hand.gazebo.xacro" />
+
+
+
   <xacro:macro name="gripperYale" params="parent name *origin">
     
     <joint name="${name}_base_joint" type="fixed" >
