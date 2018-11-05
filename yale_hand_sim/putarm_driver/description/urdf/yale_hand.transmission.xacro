@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="yale_hand_transmission" params="prefix">
+
+
+    <transmission name="${name}_base_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}_base_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${name}_base_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+
+
+
+    <transmission name="$rotator1_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$rotator1">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="$rotator1_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+
+    <transmission name="$rotator2_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$rotator2">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="$rotator2_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+
+    <transmission name="$rotator3_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$rotator3">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="$rotator3_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+
+    <transmission name="$finger1_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$finger1">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="$finger1_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+
+    <transmission name="$finger2_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$finger2">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="$finger2_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+
+
+
+    <transmission name="$finger3_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$finger3">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="$finger3_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        
+      </actuator>
+    </transmission>
+
+  </xacro:macro>
+
+</robot>
+
+
