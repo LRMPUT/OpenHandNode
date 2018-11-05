@@ -158,7 +158,7 @@
     </inertial>
   </link>
 
-  <joint name="rotator1" type="fixed">
+  <joint name="rotator1" type="continuous">
     <parent link="gripper_base_link"/>
     <child link="rotator_link1"/>
     <axis xyz="0 0 1"/>
@@ -205,6 +205,9 @@
     <origin xyz="0 0 0"/>
     <limit lower="-1.57" upper="1" effort="30" velocity="5"/>
   </joint>
-
+  
+  <xacro:yale_hand_transmission name="${name}" />
+  <xacro:yale_hand_gazebo name="${name}" />
+    
   </xacro:macro>
 </robot>

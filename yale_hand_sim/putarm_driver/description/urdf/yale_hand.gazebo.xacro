@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="ur_arm_gazebo" params="prefix">
+  <xacro:macro name="yale_hand_gazebo" params="name">
 
-    <gazebo reference="$gripper_base_link">
+<!--    <gazebo reference="$gripper_base_link">
+      <selfCollide>true</selfCollide>
+    </gazebo>-->
+    <gazebo reference="rotator_link1">
       <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="$rotator_link1">
+    <gazebo reference="rotator_link2">
       <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="$rotator_link2">
+    <gazebo reference="rotator_link3">
       <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="$rotator_link3">
+    <gazebo reference="finger_link1">
       <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="$finger_link1">
+    <gazebo reference="finger_link2">
       <selfCollide>true</selfCollide>
     </gazebo>
-    <gazebo reference="$finger_link2">
-      <selfCollide>true</selfCollide>
-    </gazebo>
-    <gazebo reference="$finger_link3">
+    <gazebo reference="finger_link3">
       <selfCollide>true</selfCollide>
     </gazebo>
 

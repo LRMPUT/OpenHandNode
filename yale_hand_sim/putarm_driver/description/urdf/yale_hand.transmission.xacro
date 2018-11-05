@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="yale_hand_transmission" params="prefix">
+  <xacro:macro name="yale_hand_transmission" params="name">
 
 
-    <transmission name="${name}_base_trans">
+<!--    <transmission name="${name}_base_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${name}_base_joint">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
@@ -14,17 +14,17 @@
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
       </actuator>
-    </transmission>
+    </transmission>-->
 
 
 
 
-    <transmission name="$rotator1_trans">
+    <transmission name="rotator1_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="$rotator1">
+      <joint name="rotator1">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="$rotator1_motor">
+      <actuator name="rotator1_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
@@ -32,12 +32,12 @@
     </transmission>
 
 
-    <transmission name="$rotator2_trans">
+    <transmission name="rotator2_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="$rotator2">
+      <joint name="rotator2">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="$rotator2_motor">
+      <actuator name="rotator2_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
@@ -45,12 +45,12 @@
     </transmission>
 
 
-    <transmission name="$rotator3_trans">
+    <transmission name="rotator3_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="$rotator3">
+      <joint name="rotator3">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="$rotator3_motor">
+      <actuator name="rotator3_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
@@ -58,12 +58,12 @@
     </transmission>
 
 
-    <transmission name="$finger1_trans">
+    <transmission name="finger1_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="$finger1">
+      <joint name="finger1">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="$finger1_motor">
+      <actuator name="finger1_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
@@ -71,12 +71,12 @@
     </transmission>
 
 
-    <transmission name="$finger2_trans">
+    <transmission name="finger2_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="$finger2">
+      <joint name="finger2">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="$finger2_motor">
+      <actuator name="finger2_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
@@ -86,12 +86,12 @@
 
 
 
-    <transmission name="$finger3_trans">
+    <transmission name="finger3_trans">
       <type>transmission_interface/SimpleTransmission</type>
-      <joint name="$finger3">
+      <joint name="finger3">
         <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
       </joint>
-      <actuator name="$finger3_motor">
+      <actuator name="finger3_motor">
         <mechanicalReduction>1</mechanicalReduction>
         <hardwareInterface>PositionJointInterface</hardwareInterface>
         
