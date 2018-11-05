@@ -6,7 +6,7 @@
 #include "dynamixel_servos/InfoMessage.h"
 #include <iostream>
 
-F
+
 
 #define servo1ID 21  // First finger
 #define servo2ID 22  // Seccond finger
