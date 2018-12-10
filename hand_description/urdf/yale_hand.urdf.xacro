@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="gripper" >
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+
+  <!-- gripper -->
+  <xacro:include filename="$(find hand_description)/urdf/gripper.urdf.xacro" />
+
+  <link name="base_link2" />
+
+  <xacro:gripperYale parent="base_link2" name="left_hand">
+    <origin xyz="0 0 0"  rpy= "0 0 0" />
+  </xacro:gripperYale>
+
+  <link name="world"/>
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "base_link2" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 1.57 0.0" />
+  </joint>
+
+</robot>

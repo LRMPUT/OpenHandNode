@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+  Example launch. 
+
+  Usage: 
+-->
+<launch>
+  
+  <!-- ur common -->
+  <include file="$(find hand_gazebo)/launch/hand.launch">
+  </include>
+
+  <!-- node example -->
+  <node name="hand_control_ex" pkg="hand_control_example" type="hand_control_example_node"/>
+  
+</launch>
