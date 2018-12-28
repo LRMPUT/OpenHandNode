@@ -53,20 +53,6 @@ find_package(catkin REQUIRED COMPONENTS
     close_hand.msg
  )
  
-  include_directories(include ${catkin_INCLUDE_DIRS})
- 
-add_executable(open_hand_controller src/open_hand_controller.cpp)
-target_link_libraries(open_hand_controller ${catkin_LIBRARIES})
-add_dependencies(open_hand_controller open_hand_controller_generate_messages_cpp)
-
-add_executable(test_listener src/test_listener.cpp)
-target_link_libraries(test_listener ${catkin_LIBRARIES})
-add_dependencies(test_listener test_listener_generate_messages_cpp)
-
-add_executable(test_talker src/test_talker.cpp)
-target_link_libraries(test_talker ${catkin_LIBRARIES})
-add_dependencies(test_talker test_talker_generate_messages_cpp)
-
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -148,6 +134,22 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/open_hand_controller_node.cpp)
+
+
+  include_directories(include ${catkin_INCLUDE_DIRS})
+ 
+add_executable(open_hand_controller src/open_hand_controller.cpp)
+target_link_libraries(open_hand_controller ${catkin_LIBRARIES})
+add_dependencies(open_hand_controller open_hand_controller_generate_messages_cpp)
+
+add_executable(test_listener src/test_listener.cpp)
+target_link_libraries(test_listener ${catkin_LIBRARIES})
+add_dependencies(test_listener test_listener_generate_messages_cpp)
+
+add_executable(test_talker src/test_talker.cpp)
+target_link_libraries(test_talker ${catkin_LIBRARIES})
+add_dependencies(test_talker test_talker_generate_messages_cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
