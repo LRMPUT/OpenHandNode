@@ -140,15 +140,15 @@ include_directories(
  
 add_executable(open_hand_controller src/open_hand_controller.cpp)
 target_link_libraries(open_hand_controller ${catkin_LIBRARIES})
-add_dependencies(open_hand_controller open_hand_controller_generate_messages_cpp)
+add_dependencies(open_hand_controller ${PROJECT_NAME}_generate_messages_cpp)
 
 add_executable(test_listener src/test_listener.cpp)
 target_link_libraries(test_listener ${catkin_LIBRARIES})
-add_dependencies(test_listener test_listener_generate_messages_cpp)
+add_dependencies(test_listener ${PROJECT_NAME}_generate_messages_cpp)
 
 add_executable(test_talker src/test_talker.cpp)
 target_link_libraries(test_talker ${catkin_LIBRARIES})
-add_dependencies(test_talker test_talker_generate_messages_cpp)
+add_dependencies(test_talker ${PROJECT_NAME}_generate_messages_cpp)
 
 
 ## Rename C++ executable without prefix
