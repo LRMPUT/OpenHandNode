@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "tes_talker");
+    ros::init(argc, argv, "talker");
 
     ros::NodeHandle node_to_contr;
 

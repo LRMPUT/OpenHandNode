@@ -21,13 +21,13 @@
   <link name="gripper_base_link">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/base.dae"/>
+        <mesh filename="package://hand_description/meshes/base.dae"/>
       </geometry>
       <origin xyz="0.0027 -0.009 0.01001" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/base.dae"/>
+        <mesh filename="package://hand_description/meshes/base.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </collision>
@@ -41,13 +41,13 @@
   <link name="rotator_link1">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger_rotator.dae"/>
+        <mesh filename="package://hand_description/meshes/finger_rotator.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger_rotator.dae"/>
+        <mesh filename="package://hand_description/meshes/finger_rotator.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
     </collision>
@@ -61,13 +61,13 @@
   <link name="rotator_link2">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger_rotator.dae"/>
+        <mesh filename="package://hand_description/meshes/finger_rotator.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger_rotator.dae"/>
+        <mesh filename="package://hand_description/meshes/finger_rotator.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </collision>
@@ -81,13 +81,13 @@
   <link name="rotator_link3">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger_rotator.dae"/>
+        <mesh filename="package://hand_description/meshes/finger_rotator.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger_rotator.dae"/>
+        <mesh filename="package://hand_description/meshes/finger_rotator.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </collision>
@@ -101,13 +101,13 @@
   <link name="finger_link1">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger.dae"/>
+        <mesh filename="package://hand_description/meshes/finger.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger.dae"/>
+        <mesh filename="package://hand_description/meshes/finger.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 0"/>
     </collision>
@@ -121,13 +121,13 @@
   <link name="finger_link2">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger.dae"/>
+        <mesh filename="package://hand_description/meshes/finger.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger.dae"/>
+        <mesh filename="package://hand_description/meshes/finger.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </collision>
@@ -141,13 +141,13 @@
   <link name="finger_link3">
     <visual>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger.dae"/>
+        <mesh filename="package://hand_description/meshes/finger.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://node_yale_hand/description/meshes/finger.dae"/>
+        <mesh filename="package://hand_description/meshes/finger.dae"/>
       </geometry>
       <origin xyz="0 0 0" rpy="1.57 0 3.14"/>
     </collision>

@@ -8,6 +8,11 @@ float64 Finger2Torque
 float64 Finger3Torque
 float64 FingersRotationTorque
 
+float64 Finger1Velocity
+float64 Finger2Velocity
+float64 Finger3Velocity
+float64 FingersRotationVelocity
+
 bool Finger1Enable
 bool Finger2Enable
 bool Finger3Enable

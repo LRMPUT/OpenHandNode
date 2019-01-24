@@ -9,6 +9,7 @@ project(open_hand_controller)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   message_generation
+  std_msgs
   roscpp
 )
 
@@ -51,6 +52,7 @@ find_package(catkin REQUIRED COMPONENTS
     ros_to_contr.msg 
     contr_to_ros.msg
     close_hand.msg
+    wide_close_hand.msg
  )
  
 ## Generate services in the 'srv' folder

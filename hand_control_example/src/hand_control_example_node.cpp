@@ -18,7 +18,7 @@ using namespace std;
 
 
 ros::Publisher ctrlPub;//control the robot
-std::vector<double> currentPos = {0,0,0,0,0,0};
+std::vector<double> currentPos = {0,0,0,0,0};
 
 
 
@@ -27,7 +27,6 @@ std::vector<double> currentPos = {0,0,0,0,0,0};
 //////////////////////////////////////////////////////////////////////
 void orderCallback(const std_msgs::String::ConstPtr& msg){
     control_msgs::FollowJointTrajectoryActionGoal ctrlMsg;
-    ctrlMsg.goal.trajectory.joint_names.push_back("rotator1");
     ctrlMsg.goal.trajectory.joint_names.push_back("rotator2");
     ctrlMsg.goal.trajectory.joint_names.push_back("rotator3");
     ctrlMsg.goal.trajectory.joint_names.push_back("finger1");
@@ -35,45 +34,47 @@ void orderCallback(const std_msgs::String::ConstPtr& msg){
     ctrlMsg.goal.trajectory.joint_names.push_back("finger3");
 
     ctrlMsg.goal.trajectory.points.resize(1);
-    ctrlMsg.goal.trajectory.points[0].positions.resize(6);
-    if (msg->data.compare("rotateThumb1")==0)
-        ctrlMsg.goal.trajectory.points[0].positions[0]=1.0;
-    else if (msg->data.compare("rotateThumb2")==0)
-        ctrlMsg.goal.trajectory.points[0].positions[0]=-1.0;
-    else if (msg->data.compare("moveFinger")==0)
-        ctrlMsg.goal.trajectory.points[0].positions[4]=-1.0;
-    else if (msg->data.compare("grab")==0)
+    ctrlMsg.goal.trajectory.points[0].positions.resize(5);
+
+    if (msg->data.compare("open")==0)
     {
-	ctrlMsg.goal.trajectory.points[0].positions[3]=1.0;
-	ctrlMsg.goal.trajectory.points[0].positions[4]=-1.0;
-	ctrlMsg.goal.trajectory.points[0].positions[5]=-1.0;
-    }
-    else if (msg->data.compare("open")==0)
-    {
+	ctrlMsg.goal.trajectory.points[0].positions[2]=0.0;
 	ctrlMsg.goal.trajectory.points[0].positions[3]=0.0;
 	ctrlMsg.goal.trajectory.points[0].positions[4]=0.0;
-	ctrlMsg.goal.trajectory.points[0].positions[5]=0.0;
+    }
+
+    else if (msg->data.compare("close")==0)
+    {
+	ctrlMsg.goal.trajectory.points[0].positions[2]=1.0;
+	ctrlMsg.goal.trajectory.points[0].positions[3]=-1.0;
+	ctrlMsg.goal.trajectory.points[0].positions[4]=-1.0;
     }
 
     else if (msg->data.compare("wideOpen")==0)
     {
-	ctrlMsg.goal.trajectory.points[0].positions[3]=-0.3;
-	ctrlMsg.goal.trajectory.points[0].positions[4]=0.3;
-	ctrlMsg.goal.trajectory.points[0].positions[5]=0.3;
+	ctrlMsg.goal.trajectory.points[0].positions[2]=0.0;
+	ctrlMsg.goal.trajectory.points[0].positions[3]=0.0;
+	ctrlMsg.goal.trajectory.points[0].positions[4]=0.0;
 	
-	//thumb
-	ctrlMsg.goal.trajectory.points[0].positions[0]=0.0;
-	//pointer
-	ctrlMsg.goal.trajectory.points[0].positions[1]=1.0;
-	//middle
-	ctrlMsg.goal.trajectory.points[0].positions[2]=-1.0;
+	ctrlMsg.goal.trajectory.points[0].positions[0]=0.7;
+	ctrlMsg.goal.trajectory.points[0].positions[1]=-0.7;
+    }
+
+    else if (msg->data.compare("wideClose")==0)
+    {
+	ctrlMsg.goal.trajectory.points[0].positions[2]=1.0;
+	ctrlMsg.goal.trajectory.points[0].positions[3]=-1.0;
+	ctrlMsg.goal.trajectory.points[0].positions[4]=-1.0;
+	
+	ctrlMsg.goal.trajectory.points[0].positions[0]=0.7;
+	ctrlMsg.goal.trajectory.points[0].positions[1]=-0.7;
     }
 
     else
         ctrlMsg.goal.trajectory.points[0].positions[0]=0.0;
     // Velocities
-    ctrlMsg.goal.trajectory.points[0].velocities.resize(6);
-    for (size_t jointNo=0; jointNo<6;jointNo++)
+    ctrlMsg.goal.trajectory.points[0].velocities.resize(5);
+    for (size_t jointNo=0; jointNo<5;jointNo++)
         ctrlMsg.goal.trajectory.points[0].velocities[jointNo] = 0.0;
     ctrlMsg.goal.trajectory.points[0].time_from_start = ros::Duration(1.0);
 
@@ -87,7 +88,7 @@ void orderCallback(const std_msgs::String::ConstPtr& msg){
 /// read state of the robot
 void urStateCallback(const control_msgs::JointTrajectoryControllerState::ConstPtr& msg)
 {
-    for (size_t jointNo=0; jointNo<6;jointNo++){
+    for (size_t jointNo=0; jointNo<5;jointNo++){
         ROS_INFO("Joint pos[%d]: %f", (int)jointNo, msg->actual.positions[jointNo]);
         currentPos[jointNo] = msg->actual.positions[jointNo];
     }

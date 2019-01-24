@@ -2,6 +2,7 @@
 #include "open_hand_controller/contr_to_ros.h"
 #include "open_hand_controller/ros_to_contr.h"
 #include "open_hand_controller/close_hand.h"
+#include "open_hand_controller/wide_close_hand.h"
 #include "dynamixel_servos/CommandMessage.h"
 #include "dynamixel_servos/InfoMessage.h"
 #include <iostream>
@@ -12,30 +13,26 @@
 #define servo2ID 22  // Seccond finger
 #define servo3ID 23  // Third finger
 #define servo4ID 24  // Fingers rotation
-/*
-#define servo1ID 24  // First finger
-#define servo2ID 23  // Seccond finger
-#define servo3ID 22  // Third finger
-#define servo4ID 21  // Fingers rotation
-*/
 
+// scaling/multiplicating values
 #define posWirstMul 0.001047197
 #define posFingersMul 0.001762977
-#define velMul 0.02398
+#define velMul 0.00209 //0.02398
 #define torqMul 0.0008382
+#define FingersWidthMul 0.5
 
-#define pos1Bias 0
-#define pos2Bias 0
-#define pos3Bias 1.9
+#define pos1Bias -0.8
+#define pos2Bias -0.9
+#define pos3Bias 1.5
 #define pos4Bias 0.88
 
 /*
-wersja z pojedynczym ograniczeniem
+Version with one limit
 #define posMax 3.14
 #define posMin 0*/
 
 /*
-Wersja z osobnymi ograniczeniami dla kazdego serwa*/
+Version with limits for each servo*/
 #define pos1Max 3.14 //1240
 #define pos1Min 0
 #define pos2Max 3.14
@@ -45,9 +42,12 @@ Wersja z osobnymi ograniczeniami dla kazdego serwa*/
 #define pos4Max 1.6 //1600
 #define pos4Min 0
 
+#define velocityMin -480
+#define velocityMax 480
+
 
 #define open_position 0
-#define close_position 1.8
+#define close_position 2//1.8
 
 using namespace std;
 
@@ -55,6 +55,7 @@ void receive_msg_from_ros(const open_hand_controller::ros_to_contr& msg);
 void receive_msg_from_servo(const dynamixel_servos::InfoMessage& msg);
 void prepare_msg_to_ros(open_hand_controller::contr_to_ros& msg);
 void receive_msg_close_hand(const open_hand_controller::close_hand& msg);
+void receive_msg_wide_close_hand(const open_hand_controller::wide_close_hand& msg);
 
 
 class dynamixelServo
@@ -66,6 +67,7 @@ private:
     float actual_torque;
     float position_to_change;
     float torque_to_change;
+    float velocity_to_change;
     bool enable;
     ros::Publisher publisher_to_servo;
 
@@ -74,6 +76,7 @@ public:
     void set_id(int value);
     void set_position_to_change(float value);
     void set_torque_to_change(float value);
+    void set_velocity_to_change(float value);
     void activate_servo();
     void deactivate_servo();
     void set_actual_position(int value);
@@ -96,6 +99,8 @@ dynamixelServo::dynamixelServo()
    actual_velocity=0;
    enable=false;
 }
+
+//function for assigning the ID
 void dynamixelServo::set_id(int value)
 {
     this->id=value;
@@ -104,7 +109,7 @@ void dynamixelServo::set_position_to_change(float value)
 {
     if(this->enable)
     {
-        /*wersja z pojedynczym ograniczeniem
+        /*Version with one limit
         if (value > posMax)
                         this->position_to_change = posMax;
                 else if (value < posMin)
@@ -112,7 +117,7 @@ void dynamixelServo::set_position_to_change(float value)
                 else
         this->position_to_change=value;*/
 
-        /*Wersja z osobnymi ograniczeniami dla kazdego serwa */
+        /*Version with limits for each servo */
 
         float posMax = 0;
                 float posMin = 0;
@@ -158,7 +163,7 @@ void dynamixelServo::set_position_to_change(float value)
                         }
                 }
 
-                cout<<posMax<<" xx "<<posMin<<endl;
+                //cout<<posMax<<this->actual_position<<posMin<<endl;
 
                 if (value > posMax)
                         this->position_to_change = posMax;
@@ -174,9 +179,9 @@ void dynamixelServo::set_position_to_change(float value)
         dynamixel_servos::CommandMessage CommandMessage;
         CommandMessage.servo_id = this->id;
 
-        CommandMessage.register_address = 112;
-        CommandMessage.bytes_number = 4;
-        CommandMessage.value = 20;
+        //CommandMessage.register_address = 112;
+        //CommandMessage.bytes_number = 4;
+        //CommandMessage.value = 20;
 
         this->publisher_to_servo.publish(CommandMessage);
 
@@ -200,12 +205,35 @@ void dynamixelServo::set_torque_to_change(float value)
 
         dynamixel_servos::CommandMessage CommandMessage;
         CommandMessage.servo_id = this->id;
-        CommandMessage.register_address = 102;
+        CommandMessage.register_address = 102; // 102 is Goal Current register adress
         CommandMessage.bytes_number = 2;
         CommandMessage.value = (int)(this->torque_to_change / torqMul);
         publisher_to_servo.publish(CommandMessage);
     }
 }
+
+
+void dynamixelServo::set_velocity_to_change(float value)
+{
+    if(this->enable)
+    {
+        if (value > 1)
+                        this->velocity_to_change = 1;
+                else if (value < 0.003)
+                        this->velocity_to_change = 0.003;
+                else
+        		this->velocity_to_change=value;
+
+        dynamixel_servos::CommandMessage CommandMessage;
+        CommandMessage.servo_id = this->id;
+        CommandMessage.register_address = 112;  //104 is Goal Velocity register adress but we are using 112 
+						//because we are in Position Control Mode
+        CommandMessage.bytes_number = 4;
+        CommandMessage.value = (int)(this->velocity_to_change / velMul);
+        publisher_to_servo.publish(CommandMessage);
+    }
+}
+
 void dynamixelServo::activate_servo()
 {
     this->enable = true;
@@ -264,7 +292,7 @@ void dynamixelServo::set_actual_position(int value)
     }
     this->actual_position = value * posMul + posBias;
     //cout<<"aktualna pozycja:"<<id<<" "<<value<<endl;
-    if(id==24) cout<<endl;
+    //if(id==24) cout<<endl;	
 }
 void dynamixelServo::set_actual_velocity(int value)
 {
@@ -302,7 +330,7 @@ void dynamixelServo::change_mode(int value)
 }
 void dynamixelServo::change_velocity(int value)
 {
-    cout<<"wyslono predkosc"<<endl;
+    cout<<"Velocity was sent"<<endl;
     dynamixel_servos::CommandMessage CommandMessage;
     CommandMessage.servo_id = this->id;
     CommandMessage.register_address = 112;
@@ -312,11 +340,12 @@ void dynamixelServo::change_velocity(int value)
     this->publisher_to_servo.publish(CommandMessage);
 }
 
-
+//creating an array for four servos
 dynamixelServo Servo[4];
 
 int main(int argc, char **argv)
 {
+    //calling the ID assignment function for each servo
     Servo[0].set_id(servo1ID);
     Servo[1].set_id(servo2ID);
     Servo[2].set_id(servo3ID);
@@ -329,6 +358,7 @@ int main(int argc, char **argv)
     ros::NodeHandle node_to_ros;
     ros::NodeHandle node_from_ros;
     ros::NodeHandle node_close_hand;
+    ros::NodeHandle node_wide_close_hand;
 
     ros::Publisher publisher_to_servo = node_to_servo.advertise<dynamixel_servos::CommandMessage>("servo_control_commands", 1000);
     ros::Subscriber subscriber_from_servo = node_from_servo.subscribe("servo_control_info", 1000, receive_msg_from_servo);
@@ -337,6 +367,8 @@ int main(int argc, char **argv)
     ros::Subscriber subscriber_from_ros = node_from_ros.subscribe("ros_to_contr", 1000, receive_msg_from_ros);
 
     ros::Subscriber subscriber_close_hand = node_close_hand.subscribe("close_hand", 1000, receive_msg_close_hand);
+
+    ros::Subscriber subscriber_wide_close_hand = node_wide_close_hand.subscribe("wide_close_hand", 1000, receive_msg_wide_close_hand);
 
     for(int i=0;i<4;i++)
     {
@@ -350,7 +382,7 @@ int main(int argc, char **argv)
 
     open_hand_controller::contr_to_ros contr_to_ros_msg;
 
-
+    cout<<endl<<"\"open_hand_controller\" is working."<<endl<<endl;
 
     while(ros::ok())
     {
@@ -363,6 +395,10 @@ int main(int argc, char **argv)
 
         loop_rate.sleep();
     }
+
+
+    cout<<endl<<"\"open_hand_controller\" stopped working."<<endl<<endl;
+
 }
 
 void receive_msg_from_ros(const open_hand_controller::ros_to_contr& msg)
@@ -394,6 +430,12 @@ void receive_msg_from_ros(const open_hand_controller::ros_to_contr& msg)
     Servo[1].set_torque_to_change((float)msg.Finger2Torque);
     Servo[2].set_torque_to_change((float)msg.Finger3Torque);
     Servo[3].set_torque_to_change((float)msg.FingersRotationTorque);
+
+
+    Servo[0].set_velocity_to_change((float)msg.Finger1Velocity);
+    Servo[1].set_velocity_to_change((float)msg.Finger2Velocity);
+    Servo[2].set_velocity_to_change((float)msg.Finger3Velocity);
+    Servo[3].set_velocity_to_change((float)msg.FingersRotationVelocity);
 
 }
 
@@ -436,7 +478,7 @@ void receive_msg_from_servo(const dynamixel_servos::InfoMessage& msg)
      }
 
      default:
-         cout << "Nieznane ID serwa:" << (int)msg.servo_id<<endl;
+         cout << "Unknown servo's ID:" << (int)msg.servo_id<<endl;
          break;
      }
  }
@@ -457,6 +499,7 @@ void prepare_msg_to_ros(open_hand_controller::contr_to_ros& msg)
     msg.Finger2Torque = Servo[1].get_actual_torque();
     msg.Finger3Torque = Servo[2].get_actual_torque();
     msg.FingersRotationTorque = Servo[3].get_actual_torque();
+
 }
 
 void receive_msg_close_hand(const open_hand_controller::close_hand& msg)
@@ -466,7 +509,11 @@ void receive_msg_close_hand(const open_hand_controller::close_hand& msg)
         for(int i=0;i<3;i++)
         {
             Servo[i].activate_servo();
+	    if(i==1)
+                Servo[i].set_torque_to_change((float)msg.FingersTorque);
+	    else
             Servo[i].set_torque_to_change((float)msg.FingersTorque);
+            Servo[i].set_velocity_to_change((float)msg.FingersVelocity);
             Servo[i].set_position_to_change(close_position);
         }
     }
@@ -477,8 +524,71 @@ void receive_msg_close_hand(const open_hand_controller::close_hand& msg)
         {
             Servo[i].activate_servo();
             Servo[i].set_torque_to_change((float)msg.FingersTorque);
+            Servo[i].set_velocity_to_change((float)msg.FingersVelocity);
             Servo[i].set_position_to_change(open_position);
         }
+    }
+}
+
+void receive_msg_wide_close_hand(const open_hand_controller::wide_close_hand& msg)
+{
+
+    
+    if(msg.FingersWideClose)
+    {
+        for(int i=0;i<3;i++)
+        {
+            Servo[i].activate_servo();
+	    if(i==1)
+                Servo[i].set_torque_to_change((float)msg.FingersTorque);
+	    else
+            Servo[i].set_torque_to_change((float)msg.FingersTorque);
+            Servo[i].set_velocity_to_change((float)msg.FingersVelocity);
+            Servo[i].set_position_to_change(close_position);
+        }
+
+	/*Servo[3].activate_servo();
+	Servo[3].set_torque_to_change(0.1);
+        Servo[3].set_velocity_to_change((float)msg.FingersVelocity);
+	if((float)msg.FingersWidth>0.95)
+	{
+		Servo[3].set_position_to_change(0.95/FingersWidthMul);
+	}
+	else if((float)msg.FingersWidth<0.06)
+	{
+		Servo[3].set_position_to_change(0.06/FingersWidthMul);
+	}
+	else
+	{
+		Servo[3].set_position_to_change((float)msg.FingersWidth/FingersWidthMul);
+	}*/
+    }
+
+    if(!msg.FingersWideClose)
+    {
+        for(int i=0;i<3;i++)
+        {
+            Servo[i].activate_servo();
+            Servo[i].set_torque_to_change((float)msg.FingersTorque);
+            Servo[i].set_velocity_to_change((float)msg.FingersVelocity);
+            Servo[i].set_position_to_change(open_position);
+        }
+	Servo[3].activate_servo();
+	Servo[3].set_torque_to_change(0.1);
+        Servo[3].set_velocity_to_change((float)msg.FingersVelocity);
+	if((float)msg.FingersWidth>0.95)
+	{
+		Servo[3].set_position_to_change(0.95/FingersWidthMul);
+	}
+	else if((float)msg.FingersWidth<0.06)
+	{
+		Servo[3].set_position_to_change(0.06/FingersWidthMul);
+	}
+	else
+	{
+		Servo[3].set_position_to_change((float)msg.FingersWidth/FingersWidthMul);
+	}
+
     }
 }
 
