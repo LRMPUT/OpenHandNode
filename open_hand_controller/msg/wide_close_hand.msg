@@ -1,0 +1,5 @@
+bool FingersWideClose
+float64 FingersTorque
+float64 FingersVelocity
+float64 FingersWidth
+
