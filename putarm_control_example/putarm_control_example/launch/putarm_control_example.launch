@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+  Example launch. 
+
+  Usage: 
+-->
+<launch>
+  
+  <!-- ur common -->
+  <include file="$(find putarm_gazebo)/launch/putarm.launch">
+  </include>
+
+  <!-- putarm control example -->
+  <node name="putarm_control_ex" pkg="putarm_control_example" type="putarm_control_example_node"/>
+  
+</launch>

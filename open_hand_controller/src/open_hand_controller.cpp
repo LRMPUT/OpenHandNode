@@ -47,7 +47,7 @@ Version with limits for each servo*/
 
 
 #define open_position 0
-#define close_position 2//1.8
+#define close_position 2.5//1.8
 
 using namespace std;
 
