@@ -28,26 +28,29 @@ Those two options above give us the same result - running simulation which we ca
 Now, in new terminal, we can public data to move the simulated hand:
 
 ```
-$ rostopic pub /hand_controller/order std_msgs/String "<option1>"
+$ rostopic pub /hand_controller/order std_msgs/String "option1"
 ```
 
 or arm:
 
 ```
-$ rostopic pub /arm_controller/order std_msgs/String "<option2>"
+$ rostopic pub /arm_controller/order std_msgs/String "option2"
 ```
 
-In <option1> field you can put one of four possible actions:
+In option1 field you can put one of four possible actions:
+```
 "open" - open the gripper
 "close" - close the gripper
+```
 
 
-
-In <option2> field you can put one of six possible actions:
+In option2 field you can put one of six possible actions:
+```
 "move0"
 "move1"
 "move2"
 "move3"
 "move4"
 "move5"
-Those actions will move the UR3 arm in six different nodes.
+```
+Those six actions will move the UR3 arm in six different nodes.
