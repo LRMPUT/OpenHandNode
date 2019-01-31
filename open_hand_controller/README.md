@@ -17,18 +17,18 @@ $ catkin_make
 
 
 ### Zawartość
-Głównym plikiem wykonywalnym jest wezel open_hand_controller, który komunikuje się z węzłem dynamixel_servos za pomocą topic'ów:
+The main executable file is the open_hand_controller node, which communicates with the dynamixel_servos node using topics:
 ```
 /servo_control_commands
 /servo_control_info
 ```
-oraz z wysyła i obiera wiadomości od systemu ROS za pomocą topic'ów:
+also sends and receives messages from ROS by the topics:
 ```
 /contr_to_ros
 /ros_to_contr
 ```
 
-Dodatkowo w pakiecie znajdują się dwa węzły ros test_talker i test_listener. Ich przeznaczeniem jest testowanie węzła pod kątem poprawności danych, które przez niego przechodzą na lini ROS - open_hand_controller
+There are two additional nodes: test_talker and test_listener. Their purpose is testing node for data correctness, which go through it between ROS and open_hand_controller.
 
 ### open_hand_controller
 Węzeł w komunikacji z końcówką manipulatora wykorzystuje przygotowane w osobnym pakiecie wiadomości oraz topic'i. Ta część działania programu została dopasowana do działającego projektu. W momencie odebrania wiadomości od elementu wykonawczego następuje aktualizacja danych przechowywanych na temat stanu serwomechanizmów.
