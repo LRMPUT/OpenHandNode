@@ -36,7 +36,7 @@ $ roscore
 $ rosrun dynamixel_servos servo_control 
 ```
 
-##Start-up
+## Start-up
 ### Topic's subscription:
 
 ```

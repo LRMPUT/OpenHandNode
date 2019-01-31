@@ -51,8 +51,6 @@ bool FingersRotationEnable
 ```
 To change the set position, enter the appropriate value in radians in the Finger_x_Position field (where _x_ is the servo no.) And activate the appropriate servo in the Finger_x_Enable field.
 
-Serwomechanizmy pracują w trybie sterowania pozycją i momentem, dlatego należy podać również wartość momentu maksymalnego jaki będzie mógł zostać użyty do wykonania danego ruchu. Wartośc ta powinna zawierać się w przedziale od 0 do 1.
-
 Servomechanisms work in the position and torque control mode, so you should also provide the maximum torque that can be used to perform a given motion. This value should be in the range from 0 to 1.
 
 Data for servomechanisms should be sent when we want to change any of the parameters. The program is protected against some cases of entering bad values.
