@@ -1,22 +1,15 @@
 # Open Hand Controller Node
 
-### Instalacja niezbędnych pakietów
-Nie jest wymagana instalacji dodatkowych zewnętrznych pakietów
+### Preparation 
+To run this controller, it is necessary to follow all instructions in "README.md" file in the "dynamixel_servos" folder.
 
-### Instalacja pakietu Open Hand Controller
-W celu instalacji, należy folder open_hand_controller umieścić w katalogu 
-```
-(adres workspace ros'a)/src
-```
-
-Następnie w terminalu przejść do katalogu z naszym workspace'em i wpisać:
+Next, please open new terminal and call:
 ```
 $ source devel/setup.bash
-$ catkin_make
 ```
 
 
-### Zawartość
+### Content of package
 The main executable file is the open_hand_controller node, which communicates with the dynamixel_servos node using topics:
 ```
 /servo_control_commands
@@ -31,14 +24,13 @@ also sends and receives messages from ROS by the topics:
 There are two additional nodes: test_talker and test_listener. Their purpose is testing node for data correctness, which go through it between ROS and open_hand_controller.
 
 ### open_hand_controller
-Węzeł w komunikacji z końcówką manipulatora wykorzystuje przygotowane w osobnym pakiecie wiadomości oraz topic'i. Ta część działania programu została dopasowana do działającego projektu. W momencie odebrania wiadomości od elementu wykonawczego następuje aktualizacja danych przechowywanych na temat stanu serwomechanizmów.
 
-W celu uruchomienia kontrolera należy użyć polecenia:
+To run the controller, use the command:
 ```
 $ rosrun open_hand_controller open_hand_controller
 ```
 
-Do komunikacji z systemem ROS zostały zaprojektowane dwie osobne wiadomości ros_to_contr oraz contr_to_ros, posiadające strukturę adekwatną do realizowanych zadań. Dodatkowo z chwytakiem można komunikować się za pomocą wiadomości close_hand.
+Two separate messages ros_to_contr and contr_to_ros were designed for communication with the ROS system, which have a structure adequate to the tasks being performed. Additionally you can communicate with the gripper using close_hand messages.
 ```
 ros_to_contr
 
@@ -57,12 +49,14 @@ bool Finger2Enable
 bool Finger3Enable
 bool FingersRotationEnable
 ```
-Chcąc zmienić pozycję zadaną należy w polu Finger_x_Position (gdzie _x_ to nr serwomechanizmu) podać odpowiednią wartość w radianach oraz aktywować odpowiedni serwomechanizm w polu Finger_x_Enable.
+To change the set position, enter the appropriate value in radians in the Finger_x_Position field (where _x_ is the servo no.) And activate the appropriate servo in the Finger_x_Enable field.
 
-Ponieważ serwomechanizmy pracują w trybie sterowania pozycją i momentem, należy podać również wartość momentu maksymalnego jaki będzie mógł zostać użyty do wykonania danego ruchu. Wartośc ta powinna zawierać się w przedziale od 0 do 1.
+Serwomechanizmy pracują w trybie sterowania pozycją i momentem, dlatego należy podać również wartość momentu maksymalnego jaki będzie mógł zostać użyty do wykonania danego ruchu. Wartośc ta powinna zawierać się w przedziale od 0 do 1.
 
+Servomechanisms work in the position and torque control mode, so you should also provide the maximum torque that can be used to perform a given motion. This value should be in the range from 0 to 1.
 
-Dane do serwomechanizmów należy wysyłać w momencie, kiedy zależy nam na zmianie któregoś z parametrów. Program jest zabezpieczony przed niektórymi przypadkami złego sformułowania wiadomości. 
+Data for servomechanisms should be sent when we want to change any of the parameters. The program is protected against some cases of entering bad values.
+
 
 ```
 contr_to_ros
@@ -83,9 +77,9 @@ float64 Finger3Torque
 float64 FingersRotationTorque
 ```
 
-Wiadomości contr_to_ros są wysyłane z częstotliwością 10Hz. W przypadku z jakiegoś powodu przerwanie z serwomechanizmem zostanie przerwane, w wiadomościach będą przesyłane ostatnio zaktualizowane dane na temat stanu mechanizmu.
+In case of some reason the interruption with the servo will be interrupted, the last updated data on the state of the mechanism will be sent in the messages.
 
-Wartości Position zawierają kąt w radianach, Velocity aktualną prędkość w poszczegónych napędach, a Torque aktualny moment na wale wyskalowany do wartości od 0 do 1.
+Value Position contain an angle in radians, Velocity current speed in individual drives, and Torque current torque calibrated to a value from 0 to 1.
 
 ```
 close_hand
@@ -94,27 +88,55 @@ bool FingersClose
 float64 FingersTorque
 ```
 
-Wiadomość close_hand jest wysyłana do kontrolera w celu zamknięcia (true) lub otwarcia (false) chwytaka za pomocą jednej komendy. Dodatkowym parametrem jest maksymalny moment jaki może zostać użyty do tej operacji. Przykład użycia poprzez wywołanie w konsoli (zamknięcie szczęk z momentem o wartości 10% maksymalnego):
+### Start-up
+
+To run the comunication with servos:
+
 ```
-$ rostopic pub /close_hand open_hand_controller/close_hand "FingersClose: true FingersTorque: 0.1"
+$ rosrun dynamixel_servos servo_control
 ```
 
-### test_talker oraz test_listener
-Oba wezły działają na podstawie topic'ów łączących węzeł open_hand_controller z systemem ROS.
+Now, in new terminal, please enter line below to run controller:
 
-test_listener po uruchomieniu wyświetla ostatnio przesłaną wiadomość do systemu ROS w konsoli.
+```
+$ rosrun open_hand_controller open_hand_controller
+```
 
-test_talker posiada intefejs pozwalający na bezpośrednie wprowadzanie danych jakie mają zostać wysłane do serwomechanizmu. W celu obserwacji zmian zaleca się otwarcie nowego okna w konsoli i użycie komendy:
+To move the hand you have to public data:
+```
+$ rostopic pub /close_hand open_hand_controller/close_hand "opcja1" "opcja2" "opcja3"
+```
+
+or
+```
+$ rostopic pub /wide_close_hand open_hand_controller/wide_close_hand "option1" "option2"
+"option3" "option4"
+```
+```
+"option1" is a bool type; "true" value closes hand; "false" value opens hand;
+"option2" is a float64 type; range is 0 to 1; It defines what percentage of the possible torque is using by servos.
+"option3" is a float64 type; range is 0 to 1; It defines what percentage of the possible velocity is using by servos.
+"option4" is a float64 type; range is 0 to 1; It defines what percentage of the possible distance between two upper fingers is using by servos.
+```
+
+### test_talker and test_listener
+Both nodes operate on the basis of topics linking the open_hand_controller node to the ROS system.
+
+test_listener on startup displays the actual parameters of servos.
+
+test_talker has an interface that allows direct input of data to be sent to the servo.
+
+To observe changes:
 ```
 $ rostopic echo /servo_control_commands 
 ```
 
-Aby uruchomić węzły testowe należy użyć komendy:
-W celu uruchomienia kontrolera należy użyć polecenia:
+
+To run test nodes, while the open_hand_control is running, use the command:
 ```
 $ rosrun open_hand_controller test_talker
 ```
-w osobnym oknie:
+in new terminal:
 ```
 $ rosrun open_hand_controller test_listener
 ```
